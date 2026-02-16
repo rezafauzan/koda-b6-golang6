@@ -18,4 +18,18 @@ var antrian = []Antrian{
 	{Nama: "Eryndor", Waktu: 9},
 }
 
-func main() {	}
+func PrintAntrian(wg *sync.WaitGroup) {
+	defer wg.Done()
+	fmt.Println("Memulai antrian")
+	for x := range antrian {
+		time.Sleep(time.Duration(antrian[x].Waktu) * time.Second)
+		fmt.Printf("Pesanan %s selesai \n" ,antrian[x].Nama)
+	}
+}
+
+func main() {
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go PrintAntrian(&wg)
+	wg.Wait()
+}
